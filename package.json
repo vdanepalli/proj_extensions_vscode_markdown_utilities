@@ -50,7 +50,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vdanepalli/markdown_utilities.git"
+    "url": "https://github.com/vdanepalli/vscode_extension_markdown_utilities.git"
   },
   "devDependencies": {
     "@types/vscode": "^1.92.0",
