@@ -2,7 +2,7 @@
   "name": "markdown-utilities",
   "displayName": "markdown-utilities",
   "description": "Markdown utilities such as wrapping markdown text in color",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -14,32 +14,46 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-        {
-            "command": "extension.highlightText",
-            "title": "Highlight Selected Text"
-        }, 
-        {
-          "command": "extension.manageColors",
-          "title": "Manage Highlight Colors"
-        }
+      {
+        "command": "extension.highlightText",
+        "title": "Highlight Selected Text"
+      },
+      {
+        "command": "extension.highlightBackground",
+        "title": "Highlight Background of Selected Text"
+      },
+      {
+        "command": "extension.manageColors",
+        "title": "Manage Highlight Colors"
+      }
     ],
     "keybindings": [
-        {
-            "command": "extension.highlightText",
-            "key": "cmd+h",
-            "when": "editorTextFocus && editorLangId == markdown"
-        }
+      {
+        "command": "extension.highlightText",
+        "key": "cmd+h",
+        "when": "editorTextFocus && editorLangId == markdown"
+      },
+      {
+        "command": "extension.highlightBackground",
+        "key": "cmd+shift+h",
+        "when": "editorTextFocus && editorLangId == markdown"
+      }
     ],
     "menus": {
-        "editor/context": [
-            {
-                "command": "extension.highlightText",
-                "when": "editorLangId == markdown",
-                "group": "navigation"
-            }
-        ]
+      "editor/context": [
+        {
+          "command": "extension.highlightText",
+          "when": "editorLangId == markdown",
+          "group": "navigation"
+        },
+        {
+          "command": "extension.highlightBackground",
+          "when": "editorLangId == markdown",
+          "group": "navigation"
+        }
+      ]
     }
-},
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",

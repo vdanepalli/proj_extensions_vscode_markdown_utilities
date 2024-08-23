@@ -1,5 +1,6 @@
 # Highlight markdown text
 
-- Wraps/unwraps selected text in markdown to be highlighted in chosen color.  
-  - Use `cmd+h` 
+
+- `cmd + h` -- > Change Text Color
 - `cmd + shift + p` -- > Manage Highlight Colors --> add/edit/delete
+- `cmd + shift + h` -- > Highlight Selected Text

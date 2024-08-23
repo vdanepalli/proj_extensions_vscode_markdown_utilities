@@ -57,6 +57,54 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	// Command to highlight/unhighlight text with a background color
+	let highlightWithBackgroundDisposable = vscode.commands.registerCommand('extension.highlightBackground', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			return;
+		}
+
+		const selection = editor.selection;
+		const selectedText = editor.document.getText(selection);
+
+		// Check if the selected text is already highlighted with background color
+		const spanBackgroundRegex = /<span style="background-color: #[a-fA-F0-9]{6};">(.+?)<\/span>/;
+		if (spanBackgroundRegex.test(selectedText)) {
+			const unwrappedText = selectedText.replace(spanBackgroundRegex, '$1');
+			editor.edit(editBuilder => {
+				editBuilder.replace(selection, unwrappedText);
+			});
+			return;
+		}
+
+		// Show quick pick for predefined colors
+		const selectedColorLabel = await vscode.window.showQuickPick(
+			[...predefinedColors.map(color => color.label), 'Custom Color...'],
+			{ placeHolder: 'Select a background color or enter your own' }
+		);
+
+		let color: string | undefined;
+
+		if (selectedColorLabel === 'Custom Color...') {
+			// If "Custom Color..." is selected, show the input box
+			color = await vscode.window.showInputBox({
+				placeHolder: 'Enter a hex color code (e.g., #ff0000)',
+				prompt: 'Enter the hex color code',
+				value: '#'
+			});
+		} else {
+			// Otherwise, use the selected predefined color
+			color = predefinedColors.find(c => c.label === selectedColorLabel)?.description;
+		}
+
+		if (color) {
+			const highlightedText = `<span style="background-color: ${color};">${selectedText}</span>`;
+			editor.edit(editBuilder => {
+				editBuilder.replace(selection, highlightedText);
+			});
+		}
+	});
+
 	// Command to manage colors
 	let manageColorsDisposable = vscode.commands.registerCommand('extension.manageColors', async () => {
 		const action = await vscode.window.showQuickPick(['Add New Color', 'Edit Existing Color', 'Delete Color'], {
@@ -103,6 +151,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(highlightWithBackgroundDisposable);
 	context.subscriptions.push(manageColorsDisposable);
 }
 
