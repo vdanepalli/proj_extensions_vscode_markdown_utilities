@@ -2,7 +2,7 @@
   "name": "markdown-utilities",
   "displayName": "markdown-utilities",
   "description": "Markdown utilities such as wrapping markdown text in color",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.92.0"
   },
