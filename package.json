@@ -2,7 +2,7 @@
   "name": "markdown-utilities",
   "displayName": "markdown-utilities",
   "description": "Markdown utilities such as wrapping markdown text in color",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -14,6 +14,10 @@
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
+      {
+        "command": "extension.underlineText",
+        "title": "Underline/Undo Underline Selected Text"
+      },
       {
         "command": "extension.highlightText",
         "title": "Highlight Selected Text"
@@ -29,6 +33,11 @@
     ],
     "keybindings": [
       {
+        "command": "extension.underlineText",
+        "key": "cmd+u",
+        "when": "editorTextFocus && editorLangId == markdown"
+      },
+      {
         "command": "extension.highlightText",
         "key": "cmd+h",
         "when": "editorTextFocus && editorLangId == markdown"
@@ -41,6 +50,11 @@
     ],
     "menus": {
       "editor/context": [
+        {
+          "command": "extension.underlineText",
+          "when": "editorLangId == markdown",
+          "group": "navigation"
+        },
         {
           "command": "extension.highlightText",
           "when": "editorLangId == markdown",

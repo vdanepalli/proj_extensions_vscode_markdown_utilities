@@ -98,7 +98,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		if (color) {
-			const highlightedText = `<span style="background-color: ${color};">${selectedText}</span>`;
+			const highlightedText = `<span style="background-color: ${color}; color: black;">${selectedText}</span>`;
 			editor.edit(editBuilder => {
 				editBuilder.replace(selection, highlightedText);
 			});
@@ -150,9 +150,37 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	let underlineTextDisposable = vscode.commands.registerCommand('extension.underlineText', async () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+			return;
+		}
+
+		const selection = editor.selection;
+		const selectedText = editor.document.getText(selection);
+
+		// Check if the selected text is already underlined
+		const underlineRegex = /<u>(.+?)<\/u>/;
+		if (underlineRegex.test(selectedText)) {
+			const unwrappedText = selectedText.replace(underlineRegex, '$1');
+			editor.edit(editBuilder => {
+				editBuilder.replace(selection, unwrappedText);
+			});
+			return;
+		}
+
+		// If not underlined, wrap the text in <u> tags
+		const underlinedText = `<u>${selectedText}</u>`;
+		
+		editor.edit(editBuilder => {
+			editBuilder.replace(selection, underlinedText);
+		});
+	});
+
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(highlightWithBackgroundDisposable);
 	context.subscriptions.push(manageColorsDisposable);
+	context.subscriptions.push(underlineTextDisposable);
 }
 
 export function deactivate() {}
